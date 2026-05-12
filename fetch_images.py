@@ -1,0 +1,1 @@
+import urllib.request, re; html = urllib.request.urlopen('https://www.kent.co.in/').read().decode('utf-8', errors='ignore'); print('\n'.join(set(re.findall(r'src=[\'\"]([^\'\"]+(?:jpg|png|webp))', html))))
