@@ -228,20 +228,6 @@ export function Navbar() {
             )}
           </div>
 
-          {/* Cart */}
-          <Link
-            to="/cart"
-            aria-label="View cart"
-            className={`btn-icon relative transition-smooth hover:bg-primary/10 hover:text-primary ${
-              isTransparent ? "text-foreground/60" : "text-foreground/60"
-            }`}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-shopping-cart"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-            <span className="absolute right-1 top-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-white ring-2 ring-white">
-              {/* Note: In a real app we would use items.length from CartContext here */}
-              !
-            </span>
-          </Link>
 
           {/* Login / Profile */}
           <Link
