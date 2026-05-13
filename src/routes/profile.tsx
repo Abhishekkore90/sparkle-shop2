@@ -162,9 +162,6 @@ function Profile() {
                  <button onClick={() => setActiveTab('security')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${activeTab === 'security' ? 'bg-primary text-white shadow-md' : 'text-foreground/70 hover:bg-secondary hover:text-primary'}`}>
                    <Lock className="h-4 w-4" /> Security
                  </button>
-                 <Link to="/orders" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-foreground/70 hover:bg-secondary hover:text-primary transition-all">
-                   <Lock className="h-4 w-4 opacity-0" /> My Orders
-                 </Link>
                  <div className="my-4 border-t border-border"></div>
                   <button 
                     onClick={handleLogout} 
