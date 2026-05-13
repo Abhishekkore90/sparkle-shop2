@@ -127,11 +127,11 @@ function Detail() {
         Back to Products
       </Link>
 
-      <div className="mt-4 grid gap-14 lg:grid-cols-2 items-start">
+      <div className="mt-4 grid gap-8 md:gap-14 lg:grid-cols-2 items-start">
 
         {/* Image */}
-        <div className="sticky top-28">
-          <div className="relative rounded-3xl bg-secondary border border-primary/5 overflow-hidden shadow-md p-8 flex items-center justify-center min-h-[400px]">
+        <div className="lg:sticky lg:top-28">
+          <div className="relative rounded-3xl bg-secondary border border-primary/5 overflow-hidden shadow-md p-6 md:p-8 flex items-center justify-center min-h-[300px] md:min-h-[450px]">
             {discount > 0 && (
               <span className="absolute left-4 top-4 z-10 rounded-full bg-accent text-primary px-4 py-1.5 text-sm font-bold shadow-sm">
                 -{discount}% OFF
@@ -151,7 +151,7 @@ function Detail() {
           </div>
 
           {/* Quick specs below image */}
-          <div className="mt-5 grid grid-cols-3 gap-3">
+          <div className="mt-4 md:mt-5 grid grid-cols-3 gap-2 md:gap-3">
             {[
               { icon: Layers, label: "Stages",   value: `${product.stages}-Stage`    },
               { icon: Gauge,  label: "Flow Rate", value: product.capacity              },
@@ -181,12 +181,12 @@ function Detail() {
             )}
           </div>
 
-          <h1 className="font-display text-4xl font-bold mb-2 leading-tight">{product.name}</h1>
-          <p className="text-xl text-muted-foreground mb-6">{product.tagline}</p>
+          <h1 className="font-display text-3xl md:text-4xl font-bold mb-2 leading-tight">{product.name}</h1>
+          <p className="text-lg md:text-xl text-muted-foreground mb-6">{product.tagline}</p>
 
           {/* Price */}
-          <div className="flex items-baseline gap-4 mb-6">
-            <span className="text-4xl font-display font-bold text-foreground">
+          <div className="flex flex-wrap items-baseline gap-4 mb-6">
+            <span className="text-3xl md:text-4xl font-display font-bold text-foreground">
               ₹{product.price.toLocaleString("en-IN")}
             </span>
             {product.oldPrice && (
@@ -205,7 +205,7 @@ function Detail() {
           <p className="text-foreground/75 leading-relaxed mb-8 text-base">{product.description}</p>
 
           {/* RO Specs box */}
-          <div className="rounded-2xl bg-primary/5 border border-primary/20 p-6 mb-8">
+          <div className="rounded-2xl bg-primary/5 border border-primary/20 p-5 md:p-6 mb-8">
             <h2 className="font-display text-base font-bold text-primary mb-4 flex items-center gap-2">
               <Zap className="h-4 w-4" aria-hidden="true" />
               Purification Specifications
@@ -228,7 +228,7 @@ function Detail() {
           {/* Features */}
           <div className="mb-8">
             <h2 className="font-display text-lg font-bold mb-4">Key Features</h2>
-            <ul className="grid gap-2.5 grid-cols-2">
+            <ul className="grid gap-2.5 grid-cols-1 sm:grid-cols-2">
               {(product.features || []).map((f) => (
                 <li key={f} className="flex items-center gap-2.5 text-sm">
                   <Check className="h-4 w-4 text-primary shrink-0" aria-hidden="true" />

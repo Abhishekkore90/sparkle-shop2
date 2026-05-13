@@ -653,7 +653,7 @@ function AdminPanel() {
       {/* ── Main Content ──────────────────────────────── */}
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Header */}
-        <header className="h-16 bg-white border-b border-border flex items-center justify-between px-4 lg:px-8 sticky top-0 z-20">
+        <header className="h-16 md:h-20 bg-white/95 backdrop-blur-md border-b border-border flex items-center justify-between px-4 md:px-8 sticky top-0 z-50">
           <div className="flex items-center gap-3 lg:gap-4 flex-1">
             <button 
               onClick={() => setSidebarOpen(true)}
@@ -680,18 +680,18 @@ function AdminPanel() {
               )}
             </div>
             {/* Small screen brand indicator */}
-            <div className="md:hidden flex flex-col">
-              <span className="text-[10px] font-black text-primary leading-none tracking-tighter uppercase">Sparkle</span>
-              <span className="text-[8px] font-bold text-slate-400 leading-none uppercase">Admin</span>
+            <div className="md:hidden flex flex-col items-start ml-1">
+              <span className="text-[12px] font-black text-primary leading-none tracking-tighter uppercase">Sparkle</span>
+              <span className="text-[9px] font-bold text-slate-400 leading-none uppercase tracking-[0.2em] mt-0.5">Admin</span>
             </div>
           </div>
           
-          <div className="flex items-center gap-2 lg:gap-4">
-            <button className="relative h-9 w-9 lg:h-10 lg:w-10 grid place-items-center rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
-              <Bell className="h-4 w-4 lg:h-5 lg:w-5 text-slate-600" />
-              <span className="absolute top-2 right-2 h-1.5 w-1.5 bg-red-500 rounded-full border-2 border-white" />
+          <div className="flex items-center gap-1.5 sm:gap-3 lg:gap-4">
+            <button className="relative h-9 w-9 md:h-10 md:w-10 grid place-items-center rounded-xl bg-slate-50 border border-slate-100 hover:bg-slate-100 transition-colors">
+              <Bell className="h-4 w-4 md:h-5 md:w-5 text-slate-600" />
+              <span className="absolute top-2.5 right-2.5 h-2 w-2 bg-red-500 rounded-full border-2 border-white" />
             </button>
-            <div className="flex items-center gap-2 lg:gap-4 pl-2 lg:pl-4 border-l border-border">
+            <div className="flex items-center gap-2 md:gap-4 pl-1.5 md:pl-4 border-l border-border">
               <div className="text-right hidden sm:block">
                 <div className="text-xs lg:text-sm font-bold text-foreground">Admin</div>
                 <div className="text-[9px] lg:text-[10px] text-muted-foreground font-medium truncate max-w-[80px] lg:max-w-[100px]">{user?.email}</div>
@@ -824,9 +824,9 @@ function AdminPanel() {
             </div>
           ) : activeTab === "products" ? (
             <div className="space-y-8 animate-in fade-in duration-500">
-               <div className="flex justify-between items-end">
+               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                 <div>
-                  <h1 className="font-display text-3xl font-bold text-foreground">Products</h1>
+                  <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground">Products</h1>
                   <p className="text-muted-foreground mt-1 text-sm">Manage your product catalog across all categories.</p>
                 </div>
                 <button 
@@ -930,9 +930,9 @@ function AdminPanel() {
             </div>
           ) : activeTab === "inquiries" ? (
             <div className="space-y-8 animate-in fade-in duration-500">
-               <div className="flex justify-between items-end">
+               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                 <div>
-                  <h1 className="font-display text-3xl font-bold text-foreground">Customer Inquiries</h1>
+                  <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground">Customer Inquiries</h1>
                   <p className="text-muted-foreground mt-1 text-sm">Manage water test bookings and installation requests.</p>
                 </div>
 
@@ -1100,12 +1100,12 @@ function AdminPanel() {
             </div>
           ) : activeTab === "services" ? (
             <div className="space-y-8 animate-in fade-in duration-500">
-               <div className="flex justify-between items-end">
+               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                 <div>
-                  <h1 className="font-display text-3xl font-bold text-foreground">Services</h1>
+                  <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground">Services</h1>
                   <p className="text-muted-foreground mt-1 text-sm">Manage service requests and AMC schedules.</p>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   <button
                     onClick={() => setIsAddServiceTypeModalOpen(true)}
                     className="btn-secondary py-2.5 px-5 text-sm flex items-center gap-2"

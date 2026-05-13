@@ -92,12 +92,10 @@ export function Navbar() {
   // Transparent on hero, frosted-blue on scroll / inner pages
   const isTransparent = isHome && !scrolled && !mobileOpen;
 
-  const headerCls = isTransparent
-    ? "absolute top-0 left-0 right-0 z-50 w-full transition-ultra"
-    : "sticky top-0 left-0 right-0 z-50 w-full transition-ultra glass-frosted shadow-premium";
+  const headerCls = "relative z-50 w-full transition-ultra";
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full transition-ultra" role="banner">
+    <header className={`${isTransparent ? "absolute" : "relative"} z-50 w-full transition-ultra`} role="banner">
 
       {/* ── Main Header ─────────────────────────────────── */}
       <div className={`${isTransparent ? "bg-transparent" : "bg-white/95 backdrop-blur-md shadow-sm"} h-16 md:h-20 transition-all border-b border-transparent pt-2 md:pt-0`}>

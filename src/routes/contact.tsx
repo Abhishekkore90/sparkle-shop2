@@ -111,7 +111,7 @@ function Contact() {
   return (
     <div>
       {/* ── Hero ──────────────────────────────────────────── */}
-      <section className="relative min-h-[50vh] flex items-center pt-32 pb-20 overflow-hidden">
+      <section className="relative min-h-[40vh] md:min-h-[50vh] flex items-center pt-24 md:pt-32 pb-12 md:pb-20 overflow-hidden">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <img 
@@ -128,9 +128,9 @@ function Contact() {
               <MessageSquare className="h-3 w-3" />
               Get in Touch
             </div>
-            <h1 id="contact-hero-heading" className="font-display text-5xl md:text-7xl font-bold leading-tight mb-6 animate-in slide-in-from-bottom duration-1000">
-              We're Here to <br />
-              <span className="text-blue-400 italic font-serif">Help You</span>
+            <h1 id="contact-hero-heading" className="font-display text-4xl md:text-7xl font-bold leading-tight mb-6 animate-in slide-in-from-bottom duration-1000 px-4">
+              We're Here to <br className="hidden md:block" />
+              <span className="text-blue-400 italic font-serif ml-2 md:ml-0">Help You</span>
             </h1>
             <p className="text-white/80 text-lg md:text-xl max-w-xl mx-auto leading-relaxed animate-in fade-in duration-1000 delay-300">
               Book a free water test, schedule installation, or raise a service request — our team responds in under 4 hours.
@@ -143,7 +143,7 @@ function Contact() {
       <div className="container-xl section-pad">
 
         {/* ── Contact info cards ────────────────────────── */}
-        <div className="grid gap-4 grid-cols-2 lg:grid-cols-4 -mt-16 relative z-20 mb-20">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 -mt-16 relative z-20 mb-12 md:mb-20 px-4 md:px-0">
           {CONTACT_DETAILS.map((c, i) => (
             <a
               key={c.title}
@@ -157,7 +157,7 @@ function Contact() {
                 <div className="text-[10px] font-bold uppercase tracking-widest text-blue-500 mb-2">
                   {c.title}
                 </div>
-                <div className="font-display text-xl font-bold text-blue-950 leading-snug mb-1">{c.text}</div>
+                <div className="font-display text-lg md:text-xl font-bold text-blue-950 leading-snug mb-1 break-words">{c.text}</div>
                 <div className="text-xs text-blue-900/60 font-medium">{c.sub}</div>
               </div>
             </a>
@@ -212,7 +212,7 @@ function Contact() {
           <form
             id="contact-form"
             aria-label="Contact SPARKLE"
-            className="lg:col-span-8 rounded-[2.5rem] bg-white border border-blue-50 p-6 md:p-10 shadow-floating"
+            className="lg:col-span-8 rounded-[2rem] md:rounded-[2.5rem] bg-white border border-blue-50 p-5 md:p-10 shadow-floating mx-2 md:mx-0"
             noValidate
             onSubmit={async (e) => {
               e.preventDefault();
@@ -259,7 +259,7 @@ function Contact() {
             <h2 className="font-display text-4xl font-bold mb-10 text-blue-950">Send Us a Message</h2>
 
 
-            <div className="grid gap-4 grid-cols-2 mb-6">
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 mb-6">
               <FormField 
                 id="contact-name"  
                 label="Full Name"     

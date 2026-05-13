@@ -25,6 +25,7 @@ const SORT_OPTIONS = [
 type SortKey = typeof SORT_OPTIONS[number]["value"];
 
 function ProductsIndex() {
+  console.log("PRODUCTS_INDEX_RELOADED");
   const { products, loading } = useProducts();
   const { category: searchCategory, q: searchQuery } = Route.useSearch();
   const navigate = Route.useNavigate();
@@ -80,7 +81,7 @@ function ProductsIndex() {
   if (sort === "stages")     list = list.sort((a, b) => b.stages - a.stages);
 
   return (
-    <div className="relative">
+    <div>
       {loading && (
         <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-50 flex items-center justify-center min-h-[50vh]">
           <div className="flex flex-col items-center gap-4">
@@ -91,17 +92,16 @@ function ProductsIndex() {
       )}
 
       {/* ── Page header ─────────────────────────────────── */}
-      <section
-        aria-labelledby="products-heading"
-        className="relative min-h-[50vh] flex items-center pt-32 pb-20 overflow-hidden"
-      >
+      <section className="relative min-h-[45vh] md:min-h-[60vh] flex items-center bg-blue-950 py-10 md:py-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-blue-950">
           <img 
             src="https://images.unsplash.com/photo-1517646287270-a5a9ca602e5c?auto=format&fit=crop&q=80&w=2000" 
-            className="w-full h-full object-cover" 
+            className="w-full h-full object-cover opacity-80" 
             alt="Purity Background"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-950/95 via-blue-900/70 to-blue-800/30" />
+          <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-blue-950/95 via-blue-900/80 to-blue-800/40" />
+        </div>
         </div>
 
         <div className="container-xl relative z-10 text-center">
@@ -112,12 +112,12 @@ function ProductsIndex() {
             </div>
             <h1
               id="products-heading"
-              className="font-display text-5xl md:text-7xl font-bold leading-tight mb-8 animate-in slide-in-from-bottom duration-1000"
+              className="font-display text-[2.75rem] md:text-7xl font-bold leading-[1.1] mb-4 md:mb-8 animate-in slide-in-from-bottom duration-1000"
             >
-              Filtration <br />
-              <span className="text-blue-400 italic font-serif">Catalog</span>
+              Filtration <br className="hidden md:block" />
+              <span className="text-blue-400 italic font-serif ml-2 md:ml-0">Catalog</span>
             </h1>
-            <p className="mx-auto max-w-xl text-white/80 text-lg md:text-xl leading-relaxed mb-10 animate-in fade-in duration-1000 delay-300">
+            <p className="mx-auto max-w-xl text-white/80 text-[13px] md:text-xl leading-relaxed mb-8 md:mb-10 animate-in fade-in duration-1000 delay-300 px-4 md:px-0">
               Select the optimal purification strategy for your home. Every model meets clinical-grade purity standards.
             </p>
 
@@ -138,9 +138,9 @@ function ProductsIndex() {
               </div>
             )}
 
-            <div className="flex flex-wrap justify-center gap-3 animate-in fade-in duration-1000 delay-500">
+            <div className="flex flex-wrap justify-center gap-2 lg:gap-3 animate-in fade-in duration-1000 delay-500">
               {["Certified Molecular Mesh", "0.001% TDS Output", "Bio-Safe Mineral Guard"].map(b => (
-                <div key={b} className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] font-bold uppercase tracking-wider text-white/90">
+                <div key={b} className="px-3 py-1.5 lg:px-4 lg:py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] md:text-[11px] font-black uppercase tracking-widest text-white/90">
                   {b}
                 </div>
               ))}
@@ -150,8 +150,8 @@ function ProductsIndex() {
       </section>
 
       {/* ── Filter & sort bar ────────────────────────────── */}
-      <div className="sticky top-20 z-30 bg-white/80 backdrop-blur-xl border-b border-blue-50 py-5">
-        <div className="container-xl flex flex-col md:flex-row items-center justify-between gap-6">
+      <div id="scrollable-filter-bar" className="bg-white border-b border-blue-50 py-6 md:py-8 mt-6 md:mt-20">
+        <div className="container-xl flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
           <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto scrollbar-hide no-scrollbar">
             <div className="flex gap-2 flex-nowrap">
               <FilterPill
@@ -195,7 +195,7 @@ function ProductsIndex() {
       </div>
 
       {/* ── Product grid ────────────────────────────────── */}
-      <section className="container-xl py-14">
+      <section className="container-xl py-10 md:py-16">
         {filter === "all" ? (
           <div className="space-y-20">
             {dynamicCategories.map(cat => {
@@ -216,15 +216,15 @@ function ProductsIndex() {
                 <div key={cat.id} id={`section-${cat.id}`} className="scroll-mt-32">
                   <div className="mb-8 flex items-end justify-between border-b border-blue-50 pb-4">
                     <div>
-                      <h2 className="font-display text-3xl font-bold text-blue-950">{cat.name}</h2>
-                      <p className="text-sm text-muted-foreground mt-1">{cat.desc}</p>
+                      <h2 className="font-display text-2xl lg:text-3xl font-bold text-blue-950">{cat.name}</h2>
+                      <p className="text-xs lg:text-sm text-muted-foreground mt-1">{cat.desc}</p>
                     </div>
-                    <div className="text-sm font-bold text-blue-600 bg-blue-50 px-4 py-1.5 rounded-full">
-                      {catProducts.length} Systems
+                    <div className="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1.5 lg:px-4 lg:py-1.5 rounded-full shrink-0">
+                      {catProducts.length} <span className="hidden sm:inline">Systems</span>
                     </div>
                   </div>
 
-                  <ul className="grid gap-4 md:gap-6 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" aria-label={`${cat.name} listings`}>
+                  <ul className="grid gap-3 md:gap-6 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" aria-label={`${cat.name} listings`}>
                     {catProducts.map(p => (
                       <li key={p.id} className="h-full">
                         <ProductCard product={p} />
@@ -279,12 +279,12 @@ function ProductsIndex() {
           </>
         )}
 
-        <div className="mt-24 grid gap-4 md:gap-6 grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 md:mt-24 grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {dynamicCategories.map(c => (
             <button
               key={c.id}
               onClick={() => handleFilterChange(c.id)}
-              className={`group text-left p-8 rounded-[2rem] border transition-all duration-500 relative overflow-hidden ${
+              className={`group text-left p-6 md:p-8 rounded-[2rem] border transition-all duration-500 relative overflow-hidden ${
                 filter === c.id
                   ? "border-blue-200 bg-blue-50/50 shadow-floating"
                   : "border-slate-100 bg-white hover:border-blue-200 hover:shadow-elegant"
@@ -319,7 +319,7 @@ function FilterPill({
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`inline-flex items-center gap-1.5 rounded-full px-6 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all duration-300 border ${
+      className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 md:px-6 md:py-2.5 text-[10px] font-black uppercase tracking-widest transition-all duration-300 border ${
         active
           ? "bg-blue-600 text-white border-blue-600 shadow-drop scale-105"
           : "bg-white text-blue-900/60 border-blue-100 hover:border-blue-400 hover:text-blue-600"

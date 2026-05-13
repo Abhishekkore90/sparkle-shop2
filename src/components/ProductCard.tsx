@@ -29,7 +29,7 @@ export function ProductCard({ product }: { product: Product }) {
         aria-label={`View ${product.name}`}
       >
         {/* Badges Row */}
-        <div className="absolute top-3 left-3 right-3 z-10 flex justify-between items-start">
+        <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
           <div className="flex flex-col gap-1.5">
             {discount > 0 && (
               <span className="inline-flex items-center gap-1 bg-emerald-500 px-2.5 py-1 rounded-lg text-[10px] font-bold text-white uppercase tracking-wide shadow-sm">
@@ -59,7 +59,7 @@ export function ProductCard({ product }: { product: Product }) {
       </Link>
 
       {/* ── Content Section ── */}
-      <div className="flex flex-1 flex-col px-5 pt-5 pb-5">
+      <div className="flex flex-1 flex-col px-3.5 pt-4 pb-4 md:px-5 md:pt-5 md:pb-5">
         {/* Category Label */}
         <span className="text-[10px] font-semibold text-primary/70 uppercase tracking-[0.15em] mb-1.5">
           {displayCategory}
@@ -67,13 +67,13 @@ export function ProductCard({ product }: { product: Product }) {
 
         {/* Title */}
         <Link to="/products/$productId" params={{ productId: product.id }}>
-          <h3 className="font-serif text-lg font-bold leading-snug text-slate-900 transition-colors duration-300 group-hover:text-primary line-clamp-1">
+          <h3 className="font-serif text-[15px] md:text-lg font-bold leading-tight text-slate-900 transition-colors duration-300 group-hover:text-primary line-clamp-1">
             {product.name}
           </h3>
         </Link>
 
         {/* Tagline */}
-        <p className="mt-1 text-[13px] text-slate-500 leading-relaxed line-clamp-2 min-h-[2.5em]">
+        <p className="mt-1 text-[11px] md:text-[13px] text-slate-500 leading-relaxed line-clamp-2 min-h-[2.5em]">
           {product.tagline}
         </p>
 
@@ -112,10 +112,10 @@ export function ProductCard({ product }: { product: Product }) {
           <Link
             to="/products/$productId"
             params={{ productId: product.id }}
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 group/btn"
+            className="flex items-center gap-1.5 px-3 py-2 md:px-4 md:py-2.5 rounded-xl bg-primary text-white text-[10px] md:text-xs font-bold hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 group/btn"
           >
             View
-            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
+            <ArrowRight className="h-3 w-3 md:h-3.5 md:w-3.5 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
           </Link>
         </div>
       </div>

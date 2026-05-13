@@ -115,13 +115,15 @@ function Home() {
   return (
     <div className="bg-white font-sans selection:bg-primary/20">
       {/* ── Hero Section (Sparkle Luxury) ─────────────────── */}
-      <section className="relative h-auto md:min-h-screen flex items-center bg-white overflow-hidden">
-        <div className="relative md:absolute md:inset-0 z-0 w-full h-full flex items-center justify-center pt-16 md:pt-0">
+      <section className="relative h-auto md:min-h-screen bg-white overflow-hidden pt-20 md:pt-0">
+        <div className="relative md:absolute md:inset-0 z-0 w-full h-full">
           <img
             src={banners.hero}
             alt="SparkleShop Premium Living"
             className="w-full h-auto md:h-full md:object-cover object-center block"
           />
+          {/* Mobile Overlay to ensure navbar legibility */}
+          <div className="absolute inset-0 bg-black/5 md:hidden pointer-events-none" />
         </div>
 
         {/* Scroll Indicator */}
@@ -131,7 +133,7 @@ function Home() {
       </section>
 
       {/* ── Product Categories ───────────────────────────── */}
-      <section className="bg-white pt-4 pb-20">
+      <section className="bg-white py-12">
         <div className="container-xl">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {[
@@ -265,10 +267,10 @@ function Home() {
 
 
       {/* ── Smarter Technology Healthier Living Banner ───────────────────────────── */}
-      <section className="bg-white py-16">
-        <div className="container-xl">
-          <div className="mb-10 text-left">
-            <h2 className="text-[#0f172a] text-3xl md:text-[38px] font-bold tracking-tight mb-2">Smarter Technology Healthier Living</h2>
+      <section className="bg-white py-12 md:py-16">
+        <div className="container-xl px-4 md:px-0">
+          <div className="mb-8 md:mb-10 text-left">
+            <h2 className="text-[#0f172a] text-2xl md:text-[38px] font-bold tracking-tight mb-2">Smarter Technology Healthier Living</h2>
             <p className="text-slate-500 text-base md:text-[18px]">
               With more than two decades of innovation & trusted by millions of families, Sparkle brings certainty to the essentials of life.
             </p>
@@ -328,11 +330,11 @@ function Home() {
             </p>
           </div>
         </div>
-        <div className="relative w-full h-auto md:h-[600px] overflow-hidden group">
+        <div className="relative w-full h-[320px] md:h-[600px] overflow-hidden group">
           <img 
             src={banners.featured} 
             alt="Featured Products" 
-            className="relative md:absolute md:inset-0 w-full h-auto md:h-full md:object-cover transition-transform duration-700 group-hover:scale-105 block" 
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 block" 
           />
         </div>
       </section>

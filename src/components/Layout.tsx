@@ -17,7 +17,7 @@ export function Layout({ children }: { children: ReactNode }) {
 
       <main 
         id="main-content" 
-        className={`flex-1 pb-16 md:pb-0 ${!isHome ? 'pt-16 md:pt-20' : ''}`}
+        className="flex-1 pb-16 md:pb-0"
       >
         {children}
       </main>
