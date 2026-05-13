@@ -849,7 +849,8 @@ function AdminPanel() {
               </div>
 
               <div className="bg-white rounded-3xl border border-border shadow-soft overflow-hidden">
-                <div className="overflow-x-auto">
+                {/* Desktop Table */}
+                <div className="hidden md:block overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
                       <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-muted-foreground border-b border-border">
@@ -926,6 +927,48 @@ function AdminPanel() {
                     </tbody>
                   </table>
                 </div>
+
+                {/* Mobile Cards */}
+                <div className="md:hidden divide-y divide-border">
+                   {localProducts.filter(p => 
+                    (p.name || "").toLowerCase().includes(globalSearch.toLowerCase())
+                  ).map((p) => (
+                    <div key={p.id} className="p-4 space-y-4">
+                      <div className="flex gap-4">
+                        <img src={p.image} className="h-20 w-20 rounded-2xl object-cover bg-slate-50 border border-border shrink-0" />
+                        <div className="min-w-0">
+                          <div className="text-xs font-bold text-primary uppercase tracking-widest mb-1">
+                             {categories.find(c => c.id === p.category)?.name || p.category}
+                          </div>
+                          <h3 className="text-sm font-bold text-slate-900 truncate">{p.name}</h3>
+                          <div className="text-lg font-black text-slate-900 mt-1">₹{p.price.toLocaleString("en-IN")}</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Link
+                          to="/products/$productId"
+                          params={{ productId: p.id }}
+                          target="_blank"
+                          className="flex-1 bg-slate-100 py-2.5 rounded-xl text-center text-xs font-bold text-slate-600 border border-slate-200"
+                        >
+                          View Page
+                        </Link>
+                        <button 
+                          onClick={() => handleEditProduct(p)}
+                          className="flex-1 bg-primary/10 py-2.5 rounded-xl text-center text-xs font-bold text-primary border border-primary/20"
+                        >
+                          Edit
+                        </button>
+                        <button 
+                          onClick={() => handleDeleteProduct(p.id, p.name)}
+                          className="w-12 bg-red-50 py-2.5 rounded-xl grid place-items-center text-red-500 border border-red-100"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           ) : activeTab === "inquiries" ? (
@@ -939,7 +982,8 @@ function AdminPanel() {
               </div>
 
               <div className="bg-white rounded-3xl border border-border shadow-soft overflow-hidden">
-                <div className="overflow-x-auto">
+                {/* Desktop Table */}
+                <div className="hidden md:block overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
                       <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-muted-foreground border-b border-border">
@@ -1357,14 +1401,14 @@ function AdminPanel() {
           ) : activeTab === "technicians" ? (
             <div className="space-y-8 animate-in fade-in duration-500">
               {/* Header */}
-              <div className="flex justify-between items-end">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
                 <div>
-                  <h1 className="font-display text-3xl font-bold text-foreground">Technicians</h1>
+                  <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground">Technicians</h1>
                   <p className="text-muted-foreground mt-1 text-sm">Manage field technicians and track their service workload.</p>
                 </div>
                 <button
                   onClick={() => setIsAddTechnicianModalOpen(true)}
-                  className="btn-primary py-2.5 px-5 text-sm"
+                  className="w-full sm:w-auto btn-primary py-2.5 px-5 text-sm"
                 >
                   <Plus className="h-4 w-4" />
                   Add Technician
@@ -1619,7 +1663,8 @@ function AdminPanel() {
               </div>
 
               <div className="bg-white rounded-3xl border border-border shadow-soft overflow-hidden">
-                <div className="overflow-x-auto">
+                {/* Desktop Table */}
+                <div className="hidden md:block overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
                       <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-muted-foreground border-b border-border">
@@ -1696,7 +1741,8 @@ function AdminPanel() {
               </div>
 
               <div className="bg-white rounded-3xl border border-border shadow-soft overflow-hidden">
-                <div className="overflow-x-auto">
+                {/* Desktop Table */}
+                <div className="hidden md:block overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
                       <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-muted-foreground border-b border-border">
@@ -1797,6 +1843,47 @@ function AdminPanel() {
                       })()}
                     </tbody>
                   </table>
+                </div>
+
+                {/* Mobile Cards */}
+                <div className="md:hidden divide-y divide-border">
+                  {localContacts.filter(contact => 
+                    (contact.name || "").toLowerCase().includes(globalSearch.toLowerCase()) ||
+                    (contact.email || "").toLowerCase().includes(globalSearch.toLowerCase())
+                  ).map((contact) => (
+                    <div key={contact.firestoreId} className="p-4 space-y-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <div className="text-sm font-bold text-slate-900">{contact.name}</div>
+                          <div className="text-[10px] text-muted-foreground">{contact.email}</div>
+                        </div>
+                        <span className={`px-2 py-1 rounded-lg text-[9px] font-bold uppercase ${
+                          contact.status === "New" ? "bg-blue-100 text-blue-700" : "bg-green-100 text-green-700"
+                        }`}>
+                          {contact.status}
+                        </span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                        <p className="text-xs text-slate-600 line-clamp-3 italic">"{contact.message}"</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => {
+                            updateDoc(doc(db, "contacts", contact.firestoreId), { status: "Responded" });
+                          }}
+                          className="flex-1 bg-primary/10 py-2.5 rounded-xl text-center text-xs font-bold text-primary border border-primary/20"
+                        >
+                          Mark Responded
+                        </button>
+                        <button
+                          onClick={() => setDeletingContactId(contact.firestoreId)}
+                          className="w-12 bg-red-50 py-2.5 rounded-xl grid place-items-center text-red-500 border border-red-100"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
