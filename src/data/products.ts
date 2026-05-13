@@ -116,7 +116,7 @@ export const products: Product[] = [
     name: "KENT AutoSoft 8L",
     category: "water-softeners",
     price: 35000,
-    image: "https://images.unsplash.com/photo-1595080838612-42da65022201?auto=format&fit=crop&q=80&w=600",
+    image: autosoftImage,
     tagline: "Compact Automatic Softener",
     description: "Smaller version of the automatic softener.",
     features: ["Automatic Regeneration", "Compact Size", "High Purity Resin"],
