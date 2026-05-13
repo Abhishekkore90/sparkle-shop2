@@ -186,7 +186,7 @@ function Home() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {[
               { title: "SPARKLE AutoSoft", image: autosoftImage, category: "water-softeners" },
-              { title: "SPARKLE AutoSoft", image: autosoftImage, category: "water-softeners" },
+              { title: "SPARKLE AutoSoft 8L", image: "https://images.unsplash.com/photo-1517646287270-a5a9ca602e5c?auto=format&fit=crop&q=80&w=600", category: "water-softeners" },
               { title: "SPARKLE Bathroom Water Softener", image: bathroomSoftenerImage, category: "water-softeners" },
               { title: "Sparkle Sand Filters", image: sandFilterImage, category: "water-softeners" }
             ].map((cat, i) => (
