@@ -849,7 +849,8 @@ function AdminPanel() {
               </div>
 
               <div className="bg-white rounded-3xl border border-border shadow-soft overflow-hidden">
-                <div className="overflow-x-auto">
+                {/* Desktop View */}
+                <div className="hidden md:block overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
                       <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-muted-foreground border-b border-border">
@@ -925,6 +926,54 @@ function AdminPanel() {
                       ))}
                     </tbody>
                   </table>
+                </div>
+
+                {/* Mobile View */}
+                <div className="md:hidden divide-y divide-border">
+                  {localProducts.filter(p => 
+                    (p.name || "").toLowerCase().includes(globalSearch.toLowerCase()) ||
+                    (p.id || "").toLowerCase().includes(globalSearch.toLowerCase()) ||
+                    (p.category || "").toLowerCase().includes(globalSearch.toLowerCase())
+                  ).map((p) => (
+                    <div key={p.id} className="p-4 space-y-4">
+                      <div className="flex items-center gap-4">
+                        <img src={p.image} className="h-20 w-20 rounded-2xl object-cover bg-slate-50 border border-border" />
+                        <div className="min-w-0">
+                          <div className="text-sm font-bold text-slate-900 truncate">{p.name}</div>
+                          <div className="text-[10px] text-muted-foreground uppercase tracking-tight">{p.id}</div>
+                          <div className="mt-1 text-sm font-black text-primary">₹{p.price.toLocaleString("en-IN")}</div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-[10px] font-bold text-slate-600 bg-slate-100 px-2 py-1 rounded-lg">
+                          {categories.find(c => c.id === p.category)?.name || p.category}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <Link
+                            to="/products/$productId"
+                            params={{ productId: p.id }}
+                            target="_blank"
+                            className="h-10 w-10 rounded-xl bg-slate-100 grid place-items-center"
+                          >
+                            <Eye className="h-5 w-5 text-slate-600" />
+                          </Link>
+                          <button 
+                            onClick={() => handleEditProduct(p)}
+                            className="h-10 w-10 rounded-xl bg-slate-100 grid place-items-center"
+                          >
+                            <Edit className="h-5 w-5 text-slate-600" />
+                          </button>
+                          <button 
+                            onClick={() => handleDeleteProduct(p.id, p.name)}
+                            className="h-10 w-10 rounded-xl bg-red-50 grid place-items-center"
+                          >
+                            <Trash2 className="h-5 w-5 text-red-500" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
