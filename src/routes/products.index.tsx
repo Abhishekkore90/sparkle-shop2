@@ -1,14 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useMemo } from "react";
-import { Filter, Droplets } from "lucide-react";
+import { Filter, Droplets, Search, X } from "lucide-react";
 import { categories, type Category } from "@/data/products";
 import { useProducts } from "@/hooks/useProducts";
 import { ProductCard } from "@/components/ProductCard";
 
 export const Route = createFileRoute("/products/")({
-  validateSearch: (search: Record<string, unknown>) => {
+  validateSearch: (search: Record<string, unknown>): { category?: string; q?: string } => {
     return {
       category: (search.category as string) || "all",
+      q: (search.q as string) || "",
     };
   },
   component: ProductsIndex,
@@ -25,9 +26,10 @@ type SortKey = typeof SORT_OPTIONS[number]["value"];
 
 function ProductsIndex() {
   const { products, loading } = useProducts();
-  const { category: searchCategory } = Route.useSearch();
+  const { category: searchCategory, q: searchQuery } = Route.useSearch();
   const navigate = Route.useNavigate();
   const [filter, setFilter] = useState<"all" | Category>((searchCategory as any) || "all");
+  const [searchTerm, setSearchTerm] = useState(searchQuery || "");
   const [sort,   setSort]   = useState<SortKey>("default");
 
   const dynamicCategories = useMemo(() => {
@@ -48,7 +50,10 @@ function ProductsIndex() {
     if (searchCategory) {
       setFilter(searchCategory as any);
     }
-  }, [searchCategory]);
+    if (searchQuery !== undefined) {
+      setSearchTerm(searchQuery);
+    }
+  }, [searchCategory, searchQuery]);
 
   const handleFilterChange = (newFilter: "all" | Category) => {
     setFilter(newFilter);
@@ -60,6 +65,15 @@ function ProductsIndex() {
   let list = filter === "all"
     ? [...products]
     : products.filter(p => p.category === filter);
+
+  if (searchTerm) {
+    const q = (searchTerm || "").toLowerCase();
+    list = list.filter(p => 
+      (p?.name || "").toLowerCase().includes(q) || 
+      (p?.tagline || "").toLowerCase().includes(q) ||
+      (p?.description || "").toLowerCase().includes(q)
+    );
+  }
 
   if (sort === "price-asc")  list = list.sort((a, b) => a.price - b.price);
   if (sort === "price-desc") list = list.sort((a, b) => b.price - a.price);
@@ -106,6 +120,23 @@ function ProductsIndex() {
             <p className="mx-auto max-w-xl text-white/80 text-lg md:text-xl leading-relaxed mb-10 animate-in fade-in duration-1000 delay-300">
               Select the optimal purification strategy for your home. Every model meets clinical-grade purity standards.
             </p>
+
+            {searchTerm && (
+              <div className="flex justify-center mb-8 animate-in zoom-in duration-500">
+                <div className="px-6 py-3 rounded-2xl bg-blue-500/20 border border-blue-400/40 backdrop-blur-xl flex items-center gap-3">
+                  <Search className="h-4 w-4 text-blue-300" />
+                  <span className="text-sm font-bold text-white">
+                    Showing results for <span className="text-blue-300 italic">"{searchTerm}"</span>
+                  </span>
+                  <button 
+                    onClick={() => { setSearchTerm(""); navigate({ search: (prev: any) => ({ ...prev, q: "" }) }); }}
+                    className="ml-2 p-1 hover:bg-white/10 rounded-full transition-colors"
+                  >
+                    <X className="h-3 w-3 text-white/60" />
+                  </button>
+                </div>
+              </div>
+            )}
 
             <div className="flex flex-wrap justify-center gap-3 animate-in fade-in duration-1000 delay-500">
               {["Certified Molecular Mesh", "0.001% TDS Output", "Bio-Safe Mineral Guard"].map(b => (
@@ -168,7 +199,17 @@ function ProductsIndex() {
         {filter === "all" ? (
           <div className="space-y-20">
             {dynamicCategories.map(cat => {
-              const catProducts = products.filter(p => p.category === cat.id);
+              let catProducts = products.filter(p => p.category === cat.id);
+              
+              if (searchTerm) {
+                const q = (searchTerm || "").toLowerCase();
+                catProducts = catProducts.filter(p => 
+                  (p?.name || "").toLowerCase().includes(q) || 
+                  (p?.tagline || "").toLowerCase().includes(q) ||
+                  (p?.description || "").toLowerCase().includes(q)
+                );
+              }
+
               if (catProducts.length === 0) return null;
 
               return (
@@ -193,13 +234,31 @@ function ProductsIndex() {
                 </div>
               );
             })}
+            {products.filter(p => {
+              const q = searchTerm.toLowerCase();
+              return (p?.name || "").toLowerCase().includes(q) || 
+                     (p?.tagline || "").toLowerCase().includes(q) ||
+                     (p?.description || "").toLowerCase().includes(q);
+            }).length === 0 && (
+              <div className="text-center py-24">
+                <Search className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
+                <p className="text-muted-foreground text-lg">No systems match your search for "<span className="font-semibold text-foreground">{searchTerm}</span>"</p>
+                <button 
+                  onClick={() => { setSearchTerm(""); navigate({ search: (prev: any) => ({ ...prev, q: "" }) }); }}
+                  className="mt-6 text-primary font-bold hover:underline"
+                >
+                  Clear search and view all systems
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <>
             <div className="mb-8 flex items-center justify-between">
               <p className="text-sm font-medium text-muted-foreground" role="status" aria-live="polite">
                 Showing <span className="text-primary font-bold">{list.length}</span> purifier{list.length !== 1 ? "s" : ""}
-                in <span className="text-foreground font-semibold">{dynamicCategories.find(c => c.id === filter)?.name}</span>
+                {searchTerm && <> for "<span className="text-foreground font-semibold">{searchTerm}</span>"</>}
+                <> in <span className="text-foreground font-semibold">{(dynamicCategories as any[]).find(c => c.id === (filter as any))?.name}</span></>
               </p>
             </div>
 

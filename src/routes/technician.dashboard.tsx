@@ -207,7 +207,7 @@ function TechnicianDashboard() {
         </div>
       </header>
 
-      <main className="flex-1 max-w-5xl w-full mx-auto p-6 md:p-8 space-y-10">
+      <main className="flex-1 max-w-5xl w-full mx-auto p-4 md:p-8 space-y-6 md:space-y-10">
         
         {/* Welcome & High-Level Summary */}
         <section className="space-y-6">
@@ -219,17 +219,17 @@ function TechnicianDashboard() {
               </h2>
             </div>
             
-            <div className="flex bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm self-start">
+            <div className="flex bg-white p-1 rounded-xl lg:rounded-2xl border border-slate-200 shadow-sm self-start w-full sm:w-auto">
               <button 
                 onClick={() => setActiveTab("active")}
-                className={`px-8 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 flex items-center gap-2 ${activeTab === "active" ? "bg-slate-900 text-white shadow-lg" : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"}`}
+                className={`flex-1 sm:flex-none px-4 lg:px-8 py-2 lg:py-2.5 rounded-lg lg:rounded-xl text-[10px] lg:text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2 ${activeTab === "active" ? "bg-slate-900 text-white shadow-lg" : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"}`}
               >
                 <Zap className={`h-3.5 w-3.5 ${activeTab === "active" ? "text-primary-300" : ""}`} />
                 ACTIVE JOBS
               </button>
               <button 
                 onClick={() => setActiveTab("history")}
-                className={`px-8 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 flex items-center gap-2 ${activeTab === "history" ? "bg-slate-900 text-white shadow-lg" : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"}`}
+                className={`flex-1 sm:flex-none px-4 lg:px-8 py-2 lg:py-2.5 rounded-lg lg:rounded-xl text-[10px] lg:text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2 ${activeTab === "history" ? "bg-slate-900 text-white shadow-lg" : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"}`}
               >
                 <CalendarDays className="h-3.5 w-3.5" />
                 HISTORY
@@ -237,20 +237,20 @@ function TechnicianDashboard() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 lg:gap-4">
             {[
-              { label: "Total Assigned", val: stats.total, icon: ClipboardList, color: "bg-blue-50 text-blue-600" },
-              { label: "Remaining", val: stats.pending, icon: Clock, color: "bg-amber-50 text-amber-600" },
+              { label: "Assigned", val: stats.total, icon: ClipboardList, color: "bg-blue-50 text-blue-600" },
+              { label: "Pending", val: stats.pending, icon: Clock, color: "bg-amber-50 text-amber-600" },
               { label: "Fulfilled", val: stats.completed, icon: CheckCircle2, color: "bg-emerald-50 text-emerald-600" },
               { label: "Reliability", val: `${stats.rate}%`, icon: ShieldCheck, color: "bg-indigo-50 text-indigo-600" }
             ].map((stat, i) => (
-              <div key={i} className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
+              <div key={i} className="bg-white p-4 lg:p-5 rounded-2xl lg:rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
                 <div className={`absolute top-0 right-0 w-20 h-20 -mr-6 -mt-6 rounded-full opacity-0 group-hover:opacity-10 transition-opacity ${stat.color.split(' ')[0]}`}></div>
-                <div className={`${stat.color} h-10 w-10 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110`}>
-                  <stat.icon className="h-5 w-5" />
+                <div className={`${stat.color} h-8 w-8 lg:h-10 lg:w-10 rounded-lg lg:rounded-xl flex items-center justify-center mb-3 lg:mb-4 transition-transform group-hover:scale-110`}>
+                  <stat.icon className="h-4 w-4 lg:h-5 lg:w-5" />
                 </div>
-                <p className="text-2xl font-display font-bold text-slate-900 leading-none">{stat.val}</p>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2">{stat.label}</p>
+                <p className="text-xl lg:text-2xl font-display font-bold text-slate-900 leading-none">{stat.val}</p>
+                <p className="text-[9px] lg:text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -277,7 +277,7 @@ function TechnicianDashboard() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
               {filteredServices.map((svc, idx) => (
                 <div 
                   key={svc.firestoreId} 
@@ -288,28 +288,28 @@ function TechnicianDashboard() {
                     <Droplets className="h-24 w-24 text-primary" />
                   </div>
 
-                  <div className="p-8 border-b border-slate-50 relative z-10">
+                  <div className="p-6 lg:p-8 border-b border-slate-50 relative z-10">
                     <div className="flex justify-between items-start mb-4">
-                      <div className="flex items-center gap-2">
-                        <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className={`px-2 py-0.5 lg:px-3 lg:py-1 rounded-full text-[8px] lg:text-[9px] font-black uppercase tracking-widest border ${
                           svc.status === "In Progress" ? "bg-blue-50 text-blue-700 border-blue-100" : 
                           svc.status === "Completed" ? "bg-emerald-50 text-emerald-700 border-emerald-100" :
                           "bg-amber-50 text-amber-700 border-amber-100"
                         }`}>
                           {svc.status}
                         </span>
-                        <span className="px-3 py-1 bg-slate-900 text-white rounded-full text-[9px] font-black uppercase tracking-widest">
+                        <span className="px-2 py-0.5 lg:px-3 lg:py-1 bg-slate-900 text-white rounded-full text-[8px] lg:text-[9px] font-black uppercase tracking-widest">
                           {svc.serviceType}
                         </span>
                       </div>
-                      <div className="text-right bg-slate-50 px-3 py-2 rounded-2xl border border-slate-100">
-                        <p className="text-xs font-bold text-slate-900">{svc.scheduledDate ? new Date(svc.scheduledDate).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}) : 'TBD'}</p>
-                        <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Target</p>
+                      <div className="text-right bg-slate-50 px-2 py-1.5 lg:px-3 lg:py-2 rounded-xl lg:rounded-2xl border border-slate-100">
+                        <p className="text-[10px] lg:text-xs font-bold text-slate-900">{svc.scheduledDate ? new Date(svc.scheduledDate).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}) : 'TBD'}</p>
+                        <p className="text-[8px] lg:text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Target</p>
                       </div>
                     </div>
-                    <h3 className="text-2xl font-display font-bold text-slate-900 group-hover:text-primary transition-colors">{svc.customerName}</h3>
-                    <p className="text-sm font-medium text-slate-500 mt-1 flex items-center gap-2">
-                      <Wrench className="h-3.5 w-3.5 text-primary" />
+                    <h3 className="text-xl lg:text-2xl font-display font-bold text-slate-900 group-hover:text-primary transition-colors truncate">{svc.customerName}</h3>
+                    <p className="text-xs lg:text-sm font-medium text-slate-500 mt-1 flex items-center gap-2">
+                      <Wrench className="h-3 w-3 lg:h-3.5 lg:w-3.5 text-primary" />
                       {svc.productName}
                     </p>
                   </div>
@@ -347,34 +347,34 @@ function TechnicianDashboard() {
                     )}
                   </div>
 
-                  <div className="px-8 py-6 bg-slate-50 border-t border-slate-100 flex gap-4">
+                  <div className="px-6 lg:px-8 py-5 lg:py-6 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row gap-3 lg:gap-4">
                     <button 
                       onClick={() => setSelectedTask(svc)}
-                      className="flex-1 py-3 px-6 rounded-2xl text-xs font-black bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 transition-all uppercase tracking-widest"
+                      className="py-2.5 lg:py-3 px-6 rounded-xl lg:rounded-2xl text-[10px] lg:text-xs font-black bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 transition-all uppercase tracking-widest"
                     >
                       Profile
                     </button>
                     {svc.status === "Completed" ? (
                       <button 
                         onClick={() => handleCreateInvoice(svc)}
-                        className="flex-[1.5] py-3 px-6 rounded-2xl text-xs font-black bg-emerald-600 text-white hover:bg-emerald-700 transition-all shadow-md flex items-center justify-center gap-2 uppercase tracking-widest"
+                        className="py-2.5 lg:py-3 px-6 rounded-xl lg:rounded-2xl text-[10px] lg:text-xs font-black bg-emerald-600 text-white hover:bg-emerald-700 transition-all shadow-md flex items-center justify-center gap-2 uppercase tracking-widest"
                       >
                         <ReceiptText className="h-4 w-4" />
                         Invoice
                       </button>
                     ) : (
-                      <div className="flex gap-2 flex-[1.5]">
+                      <div className="flex gap-2 flex-1">
                         {svc.status !== "In Progress" && (
                           <button 
                             onClick={() => handleUpdateStatus(svc.firestoreId, "In Progress")}
-                            className="flex-1 py-3 px-6 rounded-2xl text-xs font-black bg-white border-2 border-primary text-primary hover:bg-primary/5 transition-all uppercase tracking-widest"
+                            className="flex-1 py-2.5 lg:py-3 px-4 lg:px-6 rounded-xl lg:rounded-2xl text-[10px] lg:text-xs font-black bg-white border-2 border-primary text-primary hover:bg-primary/5 transition-all uppercase tracking-widest"
                           >
                             Start
                           </button>
                         )}
                         <button 
                           onClick={() => handleUpdateStatus(svc.firestoreId, "Completed", svc)}
-                          className="flex-[2] py-3 px-6 rounded-2xl text-xs font-black bg-slate-900 text-white hover:bg-primary transition-all shadow-[0_8px_20px_-5px_rgba(0,0,0,0.3)] hover:shadow-primary/30 uppercase tracking-widest"
+                          className="flex-[2] py-2.5 lg:py-3 px-4 lg:px-6 rounded-xl lg:rounded-2xl text-[10px] lg:text-xs font-black bg-slate-900 text-white hover:bg-primary transition-all shadow-lg hover:shadow-primary/30 uppercase tracking-widest"
                         >
                           Complete
                         </button>

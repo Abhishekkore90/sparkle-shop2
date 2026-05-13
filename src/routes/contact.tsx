@@ -66,6 +66,47 @@ const ENQUIRY_TYPES = [
 function Contact() {
   const [sending,      setSending]      = useState(false);
   const [enquiryType,  setEnquiryType]  = useState("");
+  const [errors,       setErrors]       = useState<Record<string, string>>({});
+  const [isAnimating,  setIsAnimating]  = useState(false);
+  
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    city: "",
+    message: ""
+  });
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    
+    if (!formData.name.trim()) newErrors.name = "Full name is required";
+    
+    const cleanPhone = formData.phone.replace(/\D/g, ""); // Remove all non-digits
+    if (!cleanPhone) newErrors.phone = "Phone number is required";
+    else if (!/^[6-9]\d{9}$/.test(cleanPhone)) newErrors.phone = "Please enter a valid 10-digit mobile number";
+    
+    if (!formData.email.trim()) newErrors.email = "Email address is required";
+    else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)) newErrors.email = "Please enter a valid email address (e.g. name@example.com)";
+    
+    if (!formData.city.trim()) newErrors.city = "City is required";
+    if (!enquiryType) newErrors.enquiryType = "Please select an enquiry type";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors(prev => {
+        const next = { ...prev };
+        delete next[name];
+        return next;
+      });
+    }
+  };
 
   return (
     <div>
@@ -175,16 +216,23 @@ function Contact() {
             noValidate
             onSubmit={async (e) => {
               e.preventDefault();
+              
+              if (!validate()) {
+                setIsAnimating(true);
+                setTimeout(() => setIsAnimating(false), 500);
+                toast.error("Please fix the errors in the form.");
+                return;
+              }
+
               setSending(true);
               
-              const formData = new FormData(e.target as HTMLFormElement);
               const data = {
-                name: formData.get("name") as string,
-                phone: formData.get("phone") as string,
-                email: formData.get("email") as string,
-                address: formData.get("city") as string,
+                name: formData.name,
+                phone: formData.phone,
+                email: formData.email,
+                address: formData.city,
                 productName: enquiryType || "General Inquiry",
-                message: formData.get("message") as string,
+                message: formData.message,
                 status: "New",
                 createdAt: new Date().toISOString()
               };
@@ -192,7 +240,13 @@ function Contact() {
               try {
                 await addDoc(collection(db, "contacts"), data);
                 toast.success("Request received! Our team will contact you within 4 hours.");
-                (e.target as HTMLFormElement).reset();
+                setFormData({
+                  name: "",
+                  phone: "",
+                  email: "",
+                  city: "",
+                  message: ""
+                });
                 setEnquiryType("");
               } catch (error) {
                 console.error("Error submitting inquiry:", error);
@@ -206,12 +260,42 @@ function Contact() {
 
 
             <div className="grid gap-4 grid-cols-2 mb-6">
-              <FormField id="contact-name"  label="Full Name"     name="name"  />
-              <FormField id="contact-phone" label="Phone Number"  name="phone" type="tel" />
+              <FormField 
+                id="contact-name"  
+                label="Full Name"     
+                name="name"  
+                value={formData.name}
+                error={errors.name}
+                onChange={handleChange}
+              />
+              <FormField 
+                id="contact-phone" 
+                label="Phone Number"  
+                name="phone" 
+                type="tel" 
+                value={formData.phone}
+                error={errors.phone}
+                onChange={handleChange}
+              />
             </div>
             <div className="grid gap-4 grid-cols-2 mb-6">
-              <FormField id="contact-email" label="Email Address" name="email" type="email" />
-              <FormField id="contact-city"  label="Your City"     name="city"  />
+              <FormField 
+                id="contact-email" 
+                label="Email Address" 
+                name="email" 
+                type="email" 
+                value={formData.email}
+                error={errors.email}
+                onChange={handleChange}
+              />
+              <FormField 
+                id="contact-city"  
+                label="Your City"     
+                name="city"  
+                value={formData.city}
+                error={errors.city}
+                onChange={handleChange}
+              />
             </div>
 
             {/* Enquiry type */}
@@ -224,18 +308,21 @@ function Contact() {
                   <button
                     key={type}
                     type="button"
-                    onClick={() => setEnquiryType(type)}
+                    onClick={() => { setEnquiryType(type); setErrors(prev => ({ ...prev, enquiryType: "" })); }}
                     aria-pressed={enquiryType === type}
                     className={`rounded-full px-4 py-2 text-xs font-semibold transition-fast border ${
                       enquiryType === type
                         ? "bg-primary text-white border-primary shadow-drop"
-                        : "bg-secondary text-foreground/70 border-border hover:border-primary/40 hover:text-primary"
+                        : errors.enquiryType 
+                          ? "bg-red-50 text-red-600 border-red-200" 
+                          : "bg-secondary text-foreground/70 border-border hover:border-primary/40 hover:text-primary"
                     }`}
                   >
                     {type}
                   </button>
                 ))}
               </div>
+              {errors.enquiryType && <p className="text-[10px] text-red-500 font-bold mt-2 ml-1 animate-fadeDown">{errors.enquiryType}</p>}
             </div>
 
             {/* Message */}
@@ -246,6 +333,8 @@ function Contact() {
               <textarea
                 id="contact-message"
                 name="message"
+                value={formData.message}
+                onChange={handleChange}
                 rows={4}
                 className="w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none transition-smooth focus:border-primary focus:ring-2 focus:ring-primary/15"
                 placeholder="Tell us more about your water source, current TDS if known, or any specific concerns…"
@@ -257,7 +346,7 @@ function Contact() {
               id="contact-submit-btn"
               disabled={sending}
               aria-busy={sending}
-              className="btn-primary w-full py-4 text-base disabled:opacity-60"
+              className={`btn-primary w-full py-4 text-base disabled:opacity-60 ${isAnimating ? 'animate-shake' : ''}`}
             >
               {sending ? "Sending…" : "Send Request"}
               <Send className="h-4 w-4" aria-hidden="true" />
@@ -274,22 +363,29 @@ function Contact() {
 }
 
 function FormField({
-  id, label, name, type = "text",
-}: { id: string; label: string; name: string; type?: string }) {
+  id, label, name, value, type = "text", error, onChange
+}: { id: string; label: string; name: string; value: string; type?: string; error?: string; onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
   return (
-    <div>
-      <label htmlFor={id} className="mb-2 block text-xs font-bold uppercase tracking-widest text-muted-foreground">
+    <div className="w-full">
+      <label htmlFor={id} className={`mb-2 block text-xs font-bold uppercase tracking-widest ${error ? 'text-red-500' : 'text-muted-foreground'}`}>
         {label}
       </label>
       <input
         id={id}
         name={name}
         type={type}
+        value={value}
         required
+        onChange={onChange}
         aria-required="true"
         autoComplete={type === "email" ? "email" : name === "name" ? "name" : name === "phone" ? "tel" : "off"}
-        className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none transition-smooth focus:border-primary focus:ring-2 focus:ring-primary/15"
+        className={`w-full rounded-xl border bg-background px-4 py-3 text-sm outline-none transition-smooth focus:ring-2 ${
+          error 
+            ? 'border-red-300 focus:border-red-500 focus:ring-red-500/15' 
+            : 'border-input focus:border-primary focus:ring-primary/15'
+        }`}
       />
+      {error && <p className="text-[10px] text-red-500 font-bold mt-1.5 ml-1 animate-fadeDown">{error}</p>}
     </div>
   );
 }

@@ -35,10 +35,10 @@ export function Footer() {
   return (
     <footer role="contentinfo" className="bg-[#142354] text-white py-16">
       <div className="container-xl">
-        <div className="grid gap-8 grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-12 grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
           
           {/* Brand */}
-          <div className="col-span-2 lg:col-span-1">
+          <div className="lg:col-span-1">
             <Link to="/" aria-label="SPARKLE — homepage">
               <div className="inline-flex flex-col mb-6 border border-white/20 p-2">
                 <span className="font-bold text-2xl md:text-3xl leading-none tracking-widest uppercase">SPARKLE</span>
@@ -52,8 +52,8 @@ export function Footer() {
           </div>
 
           {/* Nav columns */}
-          {FOOTER_COLS.map((col, idx) => (
-            <nav key={col.heading} aria-label={`${col.heading} links`} className={idx === 2 ? "col-span-2 md:col-span-1" : "col-span-1"}>
+          {FOOTER_COLS.map((col) => (
+            <nav key={col.heading} aria-label={`${col.heading} links`} className="col-span-1">
               <h3 className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-white/50 mb-4 md:mb-6">
                 {col.heading}
               </h3>
@@ -70,7 +70,7 @@ export function Footer() {
           ))}
 
           {/* Right Column: CTA & Payments */}
-          <div className="col-span-2 lg:col-span-1">
+          <div className="col-span-1 sm:col-span-2 lg:col-span-1">
             <p className="text-[13px] font-bold text-white mb-6">
               Join us as a trade partner in the growing water purification market in India.
             </p>

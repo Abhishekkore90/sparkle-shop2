@@ -115,12 +115,12 @@ function Home() {
   return (
     <div className="bg-white font-sans selection:bg-primary/20">
       {/* ── Hero Section (Sparkle Luxury) ─────────────────── */}
-      <section className="relative h-[30vh] md:min-h-screen flex items-center bg-white overflow-hidden">
-        <div className="relative md:absolute md:inset-0 z-0 w-full h-full flex items-center justify-center pt-6 md:pt-0">
+      <section className="relative h-auto md:min-h-screen flex items-center bg-white overflow-hidden">
+        <div className="relative md:absolute md:inset-0 z-0 w-full h-full flex items-center justify-center pt-16 md:pt-0">
           <img
             src={banners.hero}
             alt="SparkleShop Premium Living"
-            className="w-full h-full object-contain md:object-cover object-center block"
+            className="w-full h-auto md:h-full md:object-cover object-center block"
           />
         </div>
 
@@ -144,7 +144,7 @@ function Home() {
                 key={i} 
                 to="/products" 
                 search={{ category: cat.category }}
-                className="group relative bg-[#e8f1f8] rounded-xl p-4 md:p-6 flex flex-col items-center justify-between min-h-[220px] md:min-h-[320px] overflow-hidden transition-all hover:shadow-md"
+                className="group relative bg-[#e8f1f8] rounded-xl p-4 md:p-6 flex flex-col items-center justify-between min-h-[180px] md:min-h-[320px] overflow-hidden transition-all hover:shadow-md"
               >
                 <div className="w-full text-left z-10">
                   <h3 className="text-[#14348a] font-bold text-[12px] md:text-[15px]">{cat.title}</h3>

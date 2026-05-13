@@ -66,6 +66,7 @@ function AdminPanel() {
   const [localInquiries, setLocalInquiries] = useState<any[]>([]);
   const [inquiriesLoading, setInquiriesLoading] = useState(true);
   const [hasInitialized, setHasInitialized] = useState(false);
+  const [globalSearch, setGlobalSearch] = useState("");
   
   useEffect(() => {
     if (!productsLoading) {
@@ -653,35 +654,50 @@ function AdminPanel() {
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Header */}
         <header className="h-16 bg-white border-b border-border flex items-center justify-between px-4 lg:px-8 sticky top-0 z-20">
-          <div className="flex items-center gap-4 flex-1">
+          <div className="flex items-center gap-3 lg:gap-4 flex-1">
             <button 
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden h-10 w-10 grid place-items-center rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
+              className="lg:hidden h-9 w-9 grid place-items-center rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
             >
               <Menu className="h-5 w-5" />
             </button>
-            <div className="relative max-w-md w-full hidden sm:block">
+            <div className="relative max-w-md w-full hidden md:block">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input 
                 type="text" 
+                value={globalSearch}
+                onChange={(e) => setGlobalSearch(e.target.value)}
                 placeholder="Search anything..." 
-                className="w-full bg-slate-100 border-none rounded-xl py-2 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                className="w-full bg-slate-100 border-none rounded-xl py-2 pl-10 pr-10 text-sm outline-none focus:ring-2 focus:ring-primary/20 transition-all"
               />
+              {globalSearch && (
+                <button 
+                  onClick={() => setGlobalSearch("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground hover:text-foreground"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              )}
+            </div>
+            {/* Small screen brand indicator */}
+            <div className="md:hidden flex flex-col">
+              <span className="text-[10px] font-black text-primary leading-none tracking-tighter uppercase">Sparkle</span>
+              <span className="text-[8px] font-bold text-slate-400 leading-none uppercase">Admin</span>
             </div>
           </div>
           
           <div className="flex items-center gap-2 lg:gap-4">
-            <button className="relative h-10 w-10 grid place-items-center rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
-              <Bell className="h-5 w-5 text-slate-600" />
-              <span className="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border-2 border-white" />
+            <button className="relative h-9 w-9 lg:h-10 lg:w-10 grid place-items-center rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
+              <Bell className="h-4 w-4 lg:h-5 lg:w-5 text-slate-600" />
+              <span className="absolute top-2 right-2 h-1.5 w-1.5 bg-red-500 rounded-full border-2 border-white" />
             </button>
-            <div className="flex items-center gap-3 pl-2 lg:pl-4 border-l border-border">
-              <div className="text-right hidden md:block">
-                <div className="text-sm font-bold text-foreground">Admin</div>
-                <div className="text-[10px] text-muted-foreground font-medium truncate max-w-[100px]">{user?.email}</div>
+            <div className="flex items-center gap-2 lg:gap-4 pl-2 lg:pl-4 border-l border-border">
+              <div className="text-right hidden sm:block">
+                <div className="text-xs lg:text-sm font-bold text-foreground">Admin</div>
+                <div className="text-[9px] lg:text-[10px] text-muted-foreground font-medium truncate max-w-[80px] lg:max-w-[100px]">{user?.email}</div>
               </div>
-              <div className="h-10 w-10 rounded-full bg-primary/10 border border-primary/20 grid place-items-center shrink-0">
-                <span className="text-sm font-bold text-primary">
+              <div className="h-8 w-8 lg:h-10 lg:w-10 rounded-full bg-primary/10 border border-primary/20 grid place-items-center shrink-0">
+                <span className="text-xs lg:text-sm font-bold text-primary">
                   {user?.email?.[0].toUpperCase() || "A"}
                 </span>
               </div>
@@ -690,24 +706,24 @@ function AdminPanel() {
         </header>
 
         {/* Content Area */}
-        <div className="p-8 overflow-y-auto">
+        <div className="p-4 lg:p-8 overflow-y-auto">
           {activeTab === "dashboard" ? (
-            <div className="space-y-8 animate-in fade-in duration-500">
-              <div className="flex justify-between items-end">
+            <div className="space-y-6 lg:space-y-8 animate-in fade-in duration-500">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
                 <div>
-                  <h1 className="font-display text-3xl font-bold text-foreground tracking-tight">Dashboard</h1>
-                  <p className="text-muted-foreground mt-1 text-sm font-medium">Real-time water quality and appliance status monitoring.</p>
+                  <h1 className="font-display text-2xl lg:text-3xl font-bold text-foreground tracking-tight">Dashboard</h1>
+                  <p className="text-muted-foreground mt-1 text-xs lg:text-sm font-medium">Real-time water quality and appliance status monitoring.</p>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-2 lg:gap-3">
                   <button 
                     onClick={() => toast.info("Generating report... PDF will be ready shortly.")}
-                    className="btn-secondary py-2.5 px-5 text-sm"
+                    className="flex-1 sm:flex-none btn-secondary py-2 lg:py-2.5 px-4 lg:px-5 text-xs lg:text-sm"
                   >
                     Download Report
                   </button>
                   <button 
                     onClick={() => setActiveTab("products")}
-                    className="btn-primary py-2.5 px-5 text-sm"
+                    className="flex-1 sm:flex-none btn-primary py-2 lg:py-2.5 px-4 lg:px-5 text-xs lg:text-sm"
                   >
                     <Plus className="h-4 w-4" />
                     Add Product
@@ -716,26 +732,26 @@ function AdminPanel() {
               </div>
 
               {/* Stats Grid */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6">
                 {dynamicStats.map((stat) => (
-                  <div key={stat.label} className="bg-white p-6 rounded-2xl border border-border shadow-soft hover:border-primary/20 transition-all cursor-default group">
-                    <div className="flex justify-between items-start mb-4">
-                      <div className={`h-10 w-10 rounded-xl ${stat.bgColor || 'bg-primary/5'} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                        <stat.icon className={`h-5 w-5 ${stat.color || 'text-primary'}`} />
+                  <div key={stat.label} className="bg-white p-4 lg:p-6 rounded-2xl border border-border shadow-soft hover:border-primary/20 transition-all cursor-default group">
+                    <div className="flex justify-between items-start mb-3 lg:mb-4">
+                      <div className={`h-8 w-8 lg:h-10 lg:w-10 rounded-xl ${stat.bgColor || 'bg-primary/5'} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                        <stat.icon className={`h-4 w-4 lg:h-5 lg:w-5 ${stat.color || 'text-primary'}`} />
                       </div>
-                      <span className={`text-[10px] font-bold ${stat.label.includes('TDS') ? 'text-green-600 bg-green-50' : 'text-slate-500 bg-slate-50'} px-2 py-1 rounded-lg uppercase tracking-tighter`}>
+                      <span className={`text-[8px] lg:text-[10px] font-bold ${stat.label.includes('TDS') ? 'text-green-600 bg-green-50' : 'text-slate-500 bg-slate-50'} px-1.5 lg:px-2 py-0.5 lg:py-1 rounded-lg uppercase tracking-tighter`}>
                         {stat.trend}
                       </span>
                     </div>
-                    <div className="text-2xl font-bold text-foreground tracking-tight">{stat.value}</div>
-                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-widest mt-1 opacity-70">{stat.label}</div>
+                    <div className="text-lg lg:text-2xl font-bold text-foreground tracking-tight">{stat.value}</div>
+                    <div className="text-[10px] lg:text-xs text-muted-foreground font-bold uppercase tracking-widest mt-1 opacity-70 leading-none">{stat.label}</div>
                   </div>
                 ))}
               </div>
 
               <div className="grid lg:grid-cols-12 gap-8">
                 {/* Chart Section */}
-                <div className="lg:col-span-8 bg-white p-8 rounded-3xl border border-border shadow-sm">
+                <div className="lg:col-span-8 bg-white p-5 lg:p-8 rounded-3xl border border-border shadow-sm">
                   <div className="flex items-center justify-between mb-8">
                     <div>
                       <h2 className="font-bold text-xl tracking-tight text-foreground">Business Growth</h2>
@@ -845,7 +861,11 @@ function AdminPanel() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
-                      {localProducts.map((p) => (
+                      {localProducts.filter(p => 
+                        (p.name || "").toLowerCase().includes(globalSearch.toLowerCase()) ||
+                        (p.id || "").toLowerCase().includes(globalSearch.toLowerCase()) ||
+                        (p.category || "").toLowerCase().includes(globalSearch.toLowerCase())
+                      ).map((p) => (
                         <tr key={p.id} className="hover:bg-slate-50 transition-colors">
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-4">
@@ -931,12 +951,20 @@ function AdminPanel() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
-                      {localInquiries.length === 0 ? (
-                        <tr>
-                          <td colSpan={5} className="px-6 py-10 text-center text-muted-foreground">No inquiries found yet.</td>
-                        </tr>
-                      ) : (
-                        localInquiries.map((inq) => (
+                      {(() => {
+                        const filtered = localInquiries.filter(inq => 
+                          (inq.name || "").toLowerCase().includes(globalSearch.toLowerCase()) ||
+                          ((inq.productName || "").toLowerCase().includes(globalSearch.toLowerCase())) ||
+                          ((inq.phone || "").includes(globalSearch))
+                        );
+                        if (filtered.length === 0) return (
+                          <tr>
+                            <td colSpan={5} className="px-6 py-10 text-center text-muted-foreground">
+                              {globalSearch ? `No results for "${globalSearch}"` : "No inquiries found yet."}
+                            </td>
+                          </tr>
+                        );
+                        return filtered.map((inq) => (
                           <tr key={inq.id} className="hover:bg-slate-50 transition-colors">
                             <td className="px-6 py-4">
                               <span className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase ${
@@ -1064,7 +1092,7 @@ function AdminPanel() {
                             </td>
                           </tr>
                         ))
-                      )}
+                      })()}
                     </tbody>
                   </table>
                 </div>
@@ -1108,16 +1136,21 @@ function AdminPanel() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
-                      {localServices.length === 0 ? (
-                        <tr>
-                          <td colSpan={5} className="px-6 py-14 text-center">
-                            <Wrench className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
-                            <p className="font-bold text-foreground">No service requests yet</p>
-                            <p className="text-muted-foreground text-sm mt-1">Click "Add Service Request" to create one.</p>
-                          </td>
-                        </tr>
-                      ) : (
-                        localServices.map((svc) => (
+                      {(() => {
+                        const filtered = localServices.filter(svc => 
+                          (svc.customerName || "").toLowerCase().includes(globalSearch.toLowerCase()) ||
+                          ((svc.productName || "").toLowerCase().includes(globalSearch.toLowerCase())) ||
+                          ((svc.phone || "").includes(globalSearch))
+                        );
+                        if (filtered.length === 0) return (
+                          <tr>
+                            <td colSpan={5} className="px-6 py-14 text-center">
+                              <Wrench className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
+                              <p className="font-bold text-foreground">{globalSearch ? `No results for "${globalSearch}"` : "No service requests yet"}</p>
+                            </td>
+                          </tr>
+                        );
+                        return filtered.map((svc) => (
                           <tr key={svc.firestoreId} className="hover:bg-slate-50 transition-colors">
                             <td className="px-6 py-4">
                               <div className="text-sm font-bold">{svc.customerName}</div>
@@ -1242,7 +1275,7 @@ function AdminPanel() {
                             </td>
                           </tr>
                         ))
-                      )}
+                      })()}
                     </tbody>
                   </table>
                 </div>
@@ -1266,58 +1299,60 @@ function AdminPanel() {
               </div>
 
               {/* Summary Bar */}
-              <div className="grid grid-cols-3 gap-4">
-                <div className="bg-white rounded-2xl border border-border p-5 flex items-center gap-4 shadow-sm">
-                  <div className="h-11 w-11 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="bg-white rounded-2xl border border-border p-4 lg:p-5 flex items-center gap-4 shadow-sm">
+                  <div className="h-10 w-10 lg:h-11 lg:w-11 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                     <Users className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <div className="text-2xl font-display font-bold text-foreground">{localTechnicians.length}</div>
-                    <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Total Technicians</div>
+                    <div className="text-xl lg:text-2xl font-display font-bold text-foreground">{localTechnicians.length}</div>
+                    <div className="text-[9px] lg:text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none">Total Technicians</div>
                   </div>
                 </div>
-                <div className="bg-white rounded-2xl border border-border p-5 flex items-center gap-4 shadow-sm">
-                  <div className="h-11 w-11 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
+                <div className="bg-white rounded-2xl border border-border p-4 lg:p-5 flex items-center gap-4 shadow-sm">
+                  <div className="h-10 w-10 lg:h-11 lg:w-11 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
                     <Clock className="h-5 w-5 text-amber-500" />
                   </div>
                   <div>
-                    <div className="text-2xl font-display font-bold text-foreground">
+                    <div className="text-xl lg:text-2xl font-display font-bold text-foreground">
                       {localServices.filter(s => s.status !== "Completed").length}
                     </div>
-                    <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Open Tasks</div>
+                    <div className="text-[9px] lg:text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none">Open Tasks</div>
                   </div>
                 </div>
-                <div className="bg-white rounded-2xl border border-border p-5 flex items-center gap-4 shadow-sm">
-                  <div className="h-11 w-11 rounded-xl bg-green-50 flex items-center justify-center shrink-0">
+                <div className="bg-white rounded-2xl border border-border p-4 lg:p-5 flex items-center gap-4 shadow-sm">
+                  <div className="h-10 w-10 lg:h-11 lg:w-11 rounded-xl bg-green-50 flex items-center justify-center shrink-0">
                     <CheckCircle2 className="h-5 w-5 text-green-500" />
                   </div>
                   <div>
-                    <div className="text-2xl font-display font-bold text-foreground">
+                    <div className="text-xl lg:text-2xl font-display font-bold text-foreground">
                       {localServices.filter(s => s.status === "Completed").length}
                     </div>
-                    <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Completed</div>
+                    <div className="text-[9px] lg:text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none">Completed</div>
                   </div>
                 </div>
               </div>
 
               {/* Technician Cards Grid */}
-              {localTechnicians.length === 0 ? (
-                <div className="bg-white rounded-3xl border border-border border-dashed p-16 text-center shadow-sm">
-                  <div className="h-20 w-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-5 shadow-inner">
-                    <Users className="h-10 w-10 text-slate-300" />
+              {(() => {
+                const filtered = localTechnicians.filter(tech => 
+                  (tech.name || "").toLowerCase().includes(globalSearch.toLowerCase()) ||
+                  ((tech.phone || "").includes(globalSearch)) ||
+                  ((tech.zone || "").toLowerCase().includes(globalSearch.toLowerCase()))
+                );
+                if (filtered.length === 0) return (
+                  <div className="bg-white rounded-3xl border border-border border-dashed p-16 text-center shadow-sm">
+                    <div className="h-20 w-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-5 shadow-inner">
+                      <Users className="h-10 w-10 text-slate-300" />
+                    </div>
+                    <h3 className="font-display text-xl font-bold text-slate-900">
+                      {globalSearch ? `No results for "${globalSearch}"` : "No Technicians Yet"}
+                    </h3>
                   </div>
-                  <h3 className="font-display text-xl font-bold text-slate-900">No Technicians Yet</h3>
-                  <p className="text-muted-foreground text-sm mt-2 max-w-xs mx-auto">Add your first technician to start assigning service requests.</p>
-                  <button
-                    onClick={() => setIsAddTechnicianModalOpen(true)}
-                    className="btn-primary py-2.5 px-6 text-sm mt-6 inline-flex items-center gap-2"
-                  >
-                    <Plus className="h-4 w-4" /> Add First Technician
-                  </button>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {localTechnicians.map((tech) => {
+                );
+                return (
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    {filtered.map((tech) => {
                     const assignedTasks = assignedServicesByTech[tech.name] || [];
                     const completedCount = assignedTasks.filter(t => t.status === "Completed").length;
                     const pendingCount = assignedTasks.filter(t => t.status !== "Completed").length;
@@ -1494,8 +1529,9 @@ function AdminPanel() {
                     );
                   })}
                 </div>
-              )}
-            </div>
+              );
+            })()}
+          </div>
 
           ) : activeTab === "invoices" ? (
             <div className="space-y-8 animate-in fade-in duration-500">
@@ -1523,7 +1559,19 @@ function AdminPanel() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
-                      {localInvoices.map((inv) => {
+                      {(() => {
+                        const filtered = localInvoices.filter(inv => 
+                          (inv.customerName || "").toLowerCase().includes(globalSearch.toLowerCase()) ||
+                          (inv.id || "").toLowerCase().includes(globalSearch.toLowerCase())
+                        );
+                        if (filtered.length === 0) return (
+                          <tr>
+                            <td colSpan={6} className="px-6 py-10 text-center text-muted-foreground">
+                              {globalSearch ? `No results for "${globalSearch}"` : "No invoices found yet."}
+                            </td>
+                          </tr>
+                        );
+                        return filtered.map((inv) => {
                         const baseAmt = Number(inv.baseAmount) || 0;
                         const totalAmt = inv.taxType === "with_gst" ? baseAmt * 1.18 : baseAmt;
                         return (
@@ -1558,7 +1606,8 @@ function AdminPanel() {
                               </div>
                           </td>
                         </tr>
-                      )})}
+                      );
+                    })})()}
                     </tbody>
                   </table>
                 </div>
@@ -1586,15 +1635,21 @@ function AdminPanel() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
-                      {localContacts.length === 0 ? (
-                        <tr>
-                          <td colSpan={5} className="px-6 py-14 text-center">
-                            <Mail className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
-                            <p className="font-bold text-foreground">No contact messages yet</p>
-                          </td>
-                        </tr>
-                      ) : (
-                        localContacts.map((contact) => (
+                      {(() => {
+                        const filtered = localContacts.filter(contact => 
+                          (contact.name || "").toLowerCase().includes(globalSearch.toLowerCase()) ||
+                          (contact.email || "").toLowerCase().includes(globalSearch.toLowerCase()) ||
+                          ((contact.message || "").toLowerCase().includes(globalSearch.toLowerCase()))
+                        );
+                        if (filtered.length === 0) return (
+                          <tr>
+                            <td colSpan={5} className="px-6 py-14 text-center">
+                              <Mail className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
+                              <p className="font-bold text-foreground">{globalSearch ? `No results for "${globalSearch}"` : "No contact messages yet"}</p>
+                            </td>
+                          </tr>
+                        );
+                        return filtered.map((contact) => (
                           <tr key={contact.firestoreId} className="hover:bg-slate-50 transition-colors">
                             <td className="px-6 py-4">
                               <span className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase ${
@@ -1666,7 +1721,7 @@ function AdminPanel() {
                             </td>
                           </tr>
                         ))
-                      )}
+                      })()}
                     </tbody>
                   </table>
                 </div>
@@ -1886,10 +1941,10 @@ function AdminPanel() {
                         <option value="air-purifiers">Air Purifiers</option>
                         
                         {/* Dynamically show any other existing categories from the products list */}
-                        {Array.from(new Set(localProducts.map(p => p.category)))
-                          .filter(cat => !["ro-purifiers", "water-softeners", "kitchen-appliances", "air-purifiers", ""].includes(cat))
+                        {Array.from(new Set(localProducts.map(p => p?.category || "")))
+                          .filter(cat => cat && !["ro-purifiers", "water-softeners", "kitchen-appliances", "air-purifiers", ""].includes(cat))
                           .map(cat => (
-                            <option key={cat} value={cat}>{cat.split('-').map((w: any) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</option>
+                            <option key={cat} value={cat}>{(cat || "").split('-').map((w: any) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</option>
                           ))
                         }
                       </select>

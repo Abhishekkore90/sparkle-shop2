@@ -2,6 +2,8 @@ import { Link, useNavigate, useLocation } from "@tanstack/react-router";
 import { Menu, X, Search, UserCircle2, Sparkles } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useProducts } from "@/hooks/useProducts";
+import { auth } from "@/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 
 const NAV_LINKS = [
@@ -18,6 +20,7 @@ export function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [query,      setQuery]      = useState("");
   const [scrolled,   setScrolled]   = useState(false);
+  const [user,       setUser]       = useState<any>(null);
 
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef  = useRef<HTMLInputElement>(null);
@@ -29,6 +32,13 @@ export function Navbar() {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -68,6 +78,15 @@ export function Navbar() {
   const handleProductClick = (productId: string) => {
     setSearchOpen(false); setQuery("");
     navigate({ to: "/products/$productId", params: { productId } });
+  };
+
+  const handleSearch = (e?: React.FormEvent) => {
+    e?.preventDefault();
+    if (query.trim()) {
+      navigate({ to: "/products", search: { q: query.trim() } });
+      setSearchOpen(false);
+      setQuery("");
+    }
   };
 
   // Transparent on hero, frosted-blue on scroll / inner pages
@@ -121,25 +140,47 @@ export function Navbar() {
           <div ref={searchRef} className="relative">
             {searchOpen ? (
               <div className="flex items-center" role="search">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+                <form onSubmit={handleSearch} className="group relative flex items-center">
                   <input
                     ref={inputRef}
-                    type="search"
+                    type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleSearch();
+                    }}
                     placeholder="Search RO systems…"
                     aria-label="Search RO systems"
-                    className="w-52 rounded-xl border border-border bg-white py-2 pl-9 pr-8 text-sm outline-none transition-all focus:w-68 focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-soft"
+                    className="w-52 rounded-xl border border-border bg-white py-2 pl-9 pr-10 text-sm outline-none transition-all focus:w-68 focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-soft group-focus-within:border-primary"
                   />
-                  <button
-                    onClick={() => { setSearchOpen(false); setQuery(""); }}
-                    aria-label="Close search"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  <button 
+                    type="submit"
+                    title="Search"
+                    className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground hover:text-primary transition-all z-10 hover:scale-110 active:scale-95 cursor-pointer"
                   >
-                    <X className="h-3.5 w-3.5" aria-hidden="true" />
+                    <Search className="h-4 w-4 transition-colors group-focus-within:text-primary" aria-hidden="true" />
                   </button>
-                </div>
+                  <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 z-10">
+                    {query.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => setQuery("")}
+                        className="p-1 text-muted-foreground hover:text-primary transition-colors"
+                        aria-label="Clear query"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => { setSearchOpen(false); setQuery(""); }}
+                      aria-label="Close search"
+                      className="p-1 text-muted-foreground hover:text-foreground border-l border-border ml-1"
+                    >
+                      <X className="h-3.5 w-3.5" aria-hidden="true" />
+                    </button>
+                  </div>
+                </form>
 
                 {query.length >= 2 && (
                   <div
@@ -206,14 +247,19 @@ export function Navbar() {
 
           {/* Login / Profile */}
           <Link
-            to="/profile"
-            aria-label="Login or register"
+            to={user ? "/profile" : "/login"}
+            aria-label={user ? "View Profile" : "Login or register"}
             id="navbar-login-btn"
-            className={`btn-icon transition-smooth hover:bg-primary/10 hover:text-primary ${
+            className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-smooth hover:bg-primary/10 hover:text-primary ${
               isTransparent ? "text-foreground/60" : "text-foreground/60"
             }`}
           >
             <UserCircle2 className="h-5 w-5" aria-hidden="true" />
+            {user && (
+              <span className="hidden sm:inline text-[10px] font-black uppercase tracking-widest truncate max-w-[80px]">
+                {user.displayName?.split(' ')[0] || "Profile"}
+              </span>
+            )}
           </Link>
           
 
@@ -248,7 +294,7 @@ export function Navbar() {
       {mobileOpen && (
         <div
           id="mobile-nav"
-          className="fixed top-20 left-0 right-0 bottom-0 bg-white dark:bg-card md:hidden animate-slideDown overflow-y-auto z-40"
+          className="fixed top-16 left-0 right-0 bottom-0 bg-white dark:bg-card md:hidden animate-slideDown overflow-y-auto z-40"
         >
           <nav aria-label="Mobile navigation" className="container-xl flex flex-col py-8 gap-4">
             {NAV_LINKS.map((l) => (
