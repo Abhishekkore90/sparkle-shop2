@@ -25,21 +25,19 @@ export function ProductCard({ product }: { product: Product }) {
       <Link
         to="/products/$productId"
         params={{ productId: product.id }}
-        className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-slate-50 to-[#E1EBF4]/60 flex items-center justify-center p-6 shrink-0"
+        className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-slate-50 to-[#E1EBF4]/60 flex items-center justify-center p-4 md:p-6 shrink-0"
         aria-label={`View ${product.name}`}
       >
-        {/* Badges Row */}
-        <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
-          <div className="flex flex-col gap-1.5">
-            {discount > 0 && (
-              <span className="inline-flex items-center gap-1 bg-emerald-500 px-2.5 py-1 rounded-lg text-[10px] font-bold text-white uppercase tracking-wide shadow-sm">
-                <Zap className="h-3 w-3" />
-                {discount}% OFF
-              </span>
-            )}
-          </div>
+        {/* Badges Column */}
+        <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
+          {discount > 0 && (
+            <span className="inline-flex items-center gap-1 bg-emerald-500 px-2 py-0.5 md:px-2.5 md:py-1 rounded-md md:rounded-lg text-[9px] md:text-[10px] font-bold text-white uppercase tracking-wide shadow-sm">
+              <Zap className="h-2.5 w-2.5 md:h-3 md:w-3" />
+              {discount}% OFF
+            </span>
+          )}
           {product.badge && (
-            <span className="bg-slate-900/90 backdrop-blur-sm px-2.5 py-1 rounded-lg text-[10px] font-bold text-white uppercase tracking-wide shadow-sm">
+            <span className="bg-slate-900/90 backdrop-blur-sm px-2 py-0.5 md:px-2.5 md:py-1 rounded-md md:rounded-lg text-[9px] md:text-[10px] font-bold text-white uppercase tracking-wide shadow-sm">
               {product.badge}
             </span>
           )}
@@ -59,35 +57,35 @@ export function ProductCard({ product }: { product: Product }) {
       </Link>
 
       {/* ── Content Section ── */}
-      <div className="flex flex-1 flex-col px-3.5 pt-4 pb-4 md:px-5 md:pt-5 md:pb-5">
+      <div className="flex flex-1 flex-col px-3 pt-4 pb-4 md:px-5 md:pt-5 md:pb-5">
         {/* Category Label */}
-        <span className="text-[10px] font-semibold text-primary/70 uppercase tracking-[0.15em] mb-1.5">
+        <span className="text-[9px] md:text-[10px] font-semibold text-primary/70 uppercase tracking-[0.15em] mb-1">
           {displayCategory}
         </span>
 
         {/* Title */}
         <Link to="/products/$productId" params={{ productId: product.id }}>
-          <h3 className="font-serif text-[15px] md:text-lg font-bold leading-tight text-slate-900 transition-colors duration-300 group-hover:text-primary line-clamp-1">
+          <h3 className="font-serif text-[14px] md:text-lg font-bold leading-tight text-slate-900 transition-colors duration-300 group-hover:text-primary line-clamp-2 min-h-[2.4em] md:min-h-0">
             {product.name}
           </h3>
         </Link>
 
         {/* Tagline */}
-        <p className="mt-1 text-[11px] md:text-[13px] text-slate-500 leading-relaxed line-clamp-2 min-h-[2.5em]">
+        <p className="mt-1 text-[10px] md:text-[13px] text-slate-500 leading-relaxed line-clamp-2 min-h-[2.5em]">
           {product.tagline}
         </p>
 
         {/* Specs Row */}
-        <div className="mt-3 flex items-center gap-2 flex-wrap">
-          <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 text-[10px] font-semibold text-slate-600">
+        <div className="mt-3 flex items-center gap-1.5 md:gap-2 flex-wrap">
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-slate-100 text-[9px] md:text-[10px] font-semibold text-slate-600">
             {product.stages}-Stage
           </span>
-          <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 text-[10px] font-semibold text-slate-600">
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-slate-100 text-[9px] md:text-[10px] font-semibold text-slate-600">
             {product.capacity}
           </span>
           {product.warranty && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-50 text-[10px] font-bold text-amber-700 border border-amber-200/60">
-              <ShieldCheck className="h-3 w-3 text-amber-500" />
+            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-50 text-[9px] md:text-[10px] font-bold text-amber-700 border border-amber-200/60">
+              <ShieldCheck className="h-2.5 w-2.5 md:h-3 md:w-3 text-amber-500" />
               {product.warranty}
             </span>
           )}
@@ -97,14 +95,14 @@ export function ProductCard({ product }: { product: Product }) {
         <div className="flex-1" />
 
         {/* ── Price + CTA ── */}
-        <div className="mt-4 pt-4 border-t border-slate-100 flex items-end justify-between">
-          <div className="flex flex-col">
+        <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+          <div className="flex flex-col min-w-0">
             {product.oldPrice && (
-              <span className="text-[11px] text-slate-400 line-through mb-0.5">
+              <span className="text-[10px] md:text-[11px] text-slate-400 line-through mb-0">
                 ₹{product.oldPrice.toLocaleString("en-IN")}
               </span>
             )}
-            <span className="text-xl font-black text-slate-900 tracking-tight">
+            <span className="text-lg md:text-xl font-black text-slate-900 tracking-tight truncate">
               ₹{product.price.toLocaleString("en-IN")}
             </span>
           </div>
@@ -112,7 +110,7 @@ export function ProductCard({ product }: { product: Product }) {
           <Link
             to="/products/$productId"
             params={{ productId: product.id }}
-            className="flex items-center gap-1.5 px-3 py-2 md:px-4 md:py-2.5 rounded-xl bg-primary text-white text-[10px] md:text-xs font-bold hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 group/btn"
+            className="flex items-center justify-center gap-1 px-2.5 py-2 md:px-4 md:py-2.5 rounded-xl bg-primary text-white text-[10px] md:text-xs font-bold hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 group/btn shrink-0"
           >
             View
             <ArrowRight className="h-3 w-3 md:h-3.5 md:w-3.5 transition-transform duration-300 group-hover/btn:translate-x-0.5" />

@@ -1124,7 +1124,8 @@ function AdminPanel() {
               </div>
 
               <div className="bg-white rounded-3xl border border-border shadow-soft overflow-hidden">
-                <div className="overflow-x-auto">
+                {/* Desktop Table View */}
+                <div className="hidden md:block overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
                       <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-muted-foreground border-b border-border">
@@ -1157,9 +1158,7 @@ function AdminPanel() {
                               <div className="text-[10px] text-muted-foreground">{svc.phone}</div>
                               <div className="text-[10px] text-muted-foreground line-clamp-1">{svc.address}</div>
                             </td>
-                            {/* Product */}
                             <td className="px-6 py-4 text-sm font-medium">{svc.productName || <span className="text-muted-foreground">—</span>}</td>
-                            {/* Warranty with color logic */}
                             <td className="px-6 py-4">
                               <div className="space-y-1.5">
                                 {svc.warrantyStart && (
@@ -1278,6 +1277,80 @@ function AdminPanel() {
                       })()}
                     </tbody>
                   </table>
+                </div>
+
+                {/* Mobile Card View */}
+                <div className="md:hidden divide-y divide-border">
+                  {(() => {
+                    const filtered = localServices.filter(svc => 
+                      (svc.customerName || "").toLowerCase().includes(globalSearch.toLowerCase()) ||
+                      ((svc.productName || "").toLowerCase().includes(globalSearch.toLowerCase())) ||
+                      ((svc.phone || "").includes(globalSearch))
+                    );
+                    if (filtered.length === 0) return (
+                      <div className="px-6 py-14 text-center">
+                        <Wrench className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
+                        <p className="font-bold text-foreground">No service requests found</p>
+                      </div>
+                    );
+                    return filtered.map((svc) => (
+                      <div key={svc.firestoreId} className="p-4 space-y-4">
+                        <div className="flex justify-between items-start">
+                          <div className="min-w-0">
+                            <div className="text-sm font-bold text-slate-900 truncate">{svc.customerName}</div>
+                            <div className="text-[10px] text-muted-foreground">{svc.phone}</div>
+                          </div>
+                          <span className="px-2 py-1 rounded-lg text-[10px] font-bold uppercase bg-primary/10 text-primary shrink-0">
+                            {svc.serviceType}
+                          </span>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                            <div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mb-1">Product</div>
+                            <div className="text-[11px] font-bold text-slate-700 truncate">{svc.productName || "—"}</div>
+                          </div>
+                          <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                            <div className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mb-1">Warranty</div>
+                            <div className="text-[11px] font-bold text-slate-700">
+                              {svc.warrantyExpiry ? (typeof svc.warrantyExpiry.toDate === 'function' ? svc.warrantyExpiry.toDate() : new Date(svc.warrantyExpiry)).toLocaleDateString() : "—"}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <select 
+                            value={svc.assignedTo || ""}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              updateServiceStatus(svc.firestoreId, { 
+                                assignedTo: val, 
+                                status: val ? "Assigned" : "Pending" 
+                              });
+                            }}
+                            className="flex-1 bg-slate-100 border-none rounded-xl px-3 py-2.5 text-xs font-bold text-slate-700 outline-none"
+                          >
+                            <option value="">Assign To</option>
+                            {localTechnicians.map(tech => (
+                              <option key={tech.id} value={tech.name}>{tech.name}</option>
+                            ))}
+                          </select>
+                          <button
+                            onClick={() => handleCreateInvoiceFromService(svc)}
+                            className="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 grid place-items-center border border-emerald-100"
+                          >
+                            <ReceiptText className="h-5 w-5" />
+                          </button>
+                          <button
+                            onClick={() => setDeletingServiceId(svc.firestoreId)}
+                            className="h-10 w-10 rounded-xl bg-red-50 text-red-500 grid place-items-center border border-red-100"
+                          >
+                            <Trash2 className="h-5 w-5" />
+                          </button>
+                        </div>
+                      </div>
+                    ));
+                  })()}
                 </div>
               </div>
             </div>

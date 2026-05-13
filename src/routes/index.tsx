@@ -140,7 +140,7 @@ function Home() {
               { title: "RO Water Purifiers", image: banners.catRO, category: "ro-purifiers" },
               { title: "UV Water Purifier", image: banners.catUV, category: "ro-purifiers" },
               { title: "Gravity Water Purifier", image: banners.catGravity, category: "ro-purifiers" },
-              { title: "Nectar Hydrogen Water Maker", image: "https://images.unsplash.com/photo-1585837553281-4d279934216c?auto=format&fit=crop&q=80&w=600", category: "ro-purifiers" }
+              { title: "Nectar Hydrogen Water Maker", image: hydrogenImage, category: "ro-purifiers" }
             ].map((cat, i) => (
               <Link 
                 key={i} 

@@ -112,7 +112,7 @@ function ProductsIndex() {
             </div>
             <h1
               id="products-heading"
-              className="font-display text-[2.75rem] md:text-7xl font-bold leading-[1.1] mb-4 md:mb-8 animate-in slide-in-from-bottom duration-1000"
+              className="font-display text-4xl sm:text-5xl md:text-7xl font-bold leading-[1.1] mb-4 md:mb-8 animate-in slide-in-from-bottom duration-1000 px-2"
             >
               Filtration <br className="hidden md:block" />
               <span className="text-blue-400 italic font-serif ml-2 md:ml-0">Catalog</span>
@@ -150,10 +150,10 @@ function ProductsIndex() {
       </section>
 
       {/* ── Filter & sort bar ────────────────────────────── */}
-      <div id="scrollable-filter-bar" className="bg-white border-b border-blue-50 py-6 md:py-8 mt-6 md:mt-20">
+      <div id="scrollable-filter-bar" className="bg-white border-b border-blue-50 py-4 md:py-8 mt-4 md:mt-20">
         <div className="container-xl flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto scrollbar-hide no-scrollbar">
-            <div className="flex gap-2 flex-nowrap">
+          <div className="flex items-center gap-2 overflow-x-auto pb-4 md:pb-0 w-full md:w-auto no-scrollbar mask-fade-right">
+            <div className="flex gap-2 flex-nowrap px-4 md:px-0">
               <FilterPill
                 id="filter-all"
                 active={filter === "all"}
@@ -175,8 +175,8 @@ function ProductsIndex() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4 px-4 py-2 rounded-2xl bg-blue-50/50 border border-blue-100">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-blue-50/50 border border-blue-100 mx-4 md:mx-0">
+            <div className="flex items-center gap-2 shrink-0">
               <Filter className="h-4 w-4 text-blue-600" aria-hidden="true" />
               <span className="text-[10px] font-black uppercase tracking-widest text-blue-900/40">Sort By</span>
             </div>
@@ -184,7 +184,7 @@ function ProductsIndex() {
               id="sort-select"
               value={sort}
               onChange={e => setSort(e.target.value as SortKey)}
-              className="text-sm font-bold text-blue-950 bg-transparent outline-none cursor-pointer"
+              className="text-xs sm:text-sm font-bold text-blue-950 bg-transparent outline-none cursor-pointer w-full"
             >
               {SORT_OPTIONS.map(o => (
                 <option key={o.value} value={o.value}>{o.label}</option>
@@ -279,7 +279,7 @@ function ProductsIndex() {
           </>
         )}
 
-        <div className="mt-12 md:mt-24 grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 md:mt-24 grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 px-4 md:px-0">
           {dynamicCategories.map(c => (
             <button
               key={c.id}
