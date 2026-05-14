@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from "@tanstack/react-router";
-import { Menu, X, Search, UserCircle2, Sparkles } from "lucide-react";
+import { Menu, X, Search, UserCircle2, Sparkles, ShieldCheck } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useProducts } from "@/hooks/useProducts";
 import { auth } from "@/firebase";
@@ -229,6 +229,18 @@ export function Navbar() {
           </div>
 
 
+          {/* Admin */}
+          <Link
+            to="/admin"
+            aria-label="Admin Portal"
+            className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-smooth hover:bg-primary/10 hover:text-primary ${
+              isTransparent ? "text-foreground/60" : "text-foreground/60"
+            }`}
+          >
+            <ShieldCheck className="h-5 w-5" aria-hidden="true" />
+          </Link>
+
+
           {/* Login / Profile */}
           <Link
             to={user ? "/profile" : "/login"}
@@ -293,6 +305,14 @@ export function Navbar() {
                 {l.label}
               </Link>
             ))}
+            <Link
+              to="/admin"
+              onClick={() => setMobileOpen(false)}
+              className="rounded-2xl px-6 py-4 text-lg font-bold hover:bg-secondary transition-fast border border-transparent hover:border-blue-100 flex items-center gap-3"
+            >
+              <ShieldCheck className="h-6 w-6 text-primary" />
+              Admin Portal
+            </Link>
             <div className="mt-6 pt-6 border-t border-border">
               <Link 
                 to="/contact" 

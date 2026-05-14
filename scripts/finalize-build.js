@@ -68,10 +68,18 @@ try {
     console.log('Renamed _shell.html to index.html.');
   }
 
-  // Create 404.html fallback
+  // Create 404.html fallback (Clean Shell for sub-pages to prevent hydration mismatch)
   if (fs.existsSync(indexPath)) {
-    fs.copyFileSync(indexPath, path.join(dist, '404.html'));
-    console.log('Created 404.html fallback.');
+    let html = fs.readFileSync(indexPath, 'utf8');
+    // Replace everything inside <body> except the root div and scripts
+    // This ensures sub-pages like /admin load a blank shell first
+    html = html.replace(/<body>([\s\S]*)<\/body>/, (match, body) => {
+      // Keep the main script and any critical div
+      const scripts = body.match(/<script[\s\S]*?<\/script>/g) || [];
+      return `<body><div id="root"></div>${scripts.join('')}</body>`;
+    });
+    fs.writeFileSync(path.join(dist, '404.html'), html);
+    console.log('Created clean 404.html fallback shell.');
   }
 
   // Remove the server folder
