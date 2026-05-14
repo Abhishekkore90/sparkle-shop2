@@ -715,12 +715,7 @@ function AdminPanel() {
                   <p className="text-muted-foreground mt-1 text-xs lg:text-sm font-medium">Real-time water quality and appliance status monitoring.</p>
                 </div>
                 <div className="flex gap-2 lg:gap-3">
-                  <button 
-                    onClick={() => toast.info("Generating report... PDF will be ready shortly.")}
-                    className="flex-1 sm:flex-none btn-secondary py-2 lg:py-2.5 px-4 lg:px-5 text-xs lg:text-sm"
-                  >
-                    Download Report
-                  </button>
+
                   <button 
                     onClick={() => setActiveTab("products")}
                     className="flex-1 sm:flex-none btn-primary py-2 lg:py-2.5 px-4 lg:px-5 text-xs lg:text-sm"
